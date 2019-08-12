@@ -54,8 +54,6 @@ fn parse(
                             is_break = true;
                             break;
                         }
-                    println!("{} > {}", res.as_object().unwrap()
-                                     .get("date").unwrap().as_i64().unwrap(), param.before_time);
                     vec.push(format!("post_id: {}",
                                      match res.as_object().unwrap()
                                      .get("post_type").unwrap().as_str().unwrap() {
@@ -86,7 +84,7 @@ pub fn search(
 {
     let before_time =
         SystemTime::now().duration_since(SystemTime::UNIX_EPOCH).unwrap().as_secs() -
-        map.get("days").unwrap().as_u64().unwrap();
+        map.get("days").unwrap().as_u64().unwrap() * 60 * 60 * 24;
     let handlers: Vec<_> = map.get("groups").unwrap()
         .as_vec().unwrap().iter().map(|search_arg| {
         let s_arg = Param{ id: search_arg.group_id,
